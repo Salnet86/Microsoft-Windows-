@@ -30,7 +30,7 @@ namespace SqlCommandCS
 
 ------------
 
-        //
+        
         string connectionString = ConsoleApplication1.Properties.Settings.Default.ConnectionString;
         //
     

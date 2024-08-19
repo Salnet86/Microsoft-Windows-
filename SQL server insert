@@ -1,0 +1,39 @@
+SqlConnection conn = new SqlConnection("User Id=sa;Password=mypassword;DataSource=127.0.0.1;Database=Test");
+SqlCommand cmd = new SqlCommand();
+cmd.CommandText = "INSERT INTO dept (deptno, dname, loc) VALUES (10,'Accounting','New York')";
+cmd.Connection = conn;
+conn.Open();
+try {
+  int aff = cmd.ExecuteNonQuery();
+  MessageBox.Show(aff + " rows were affected.");
+}
+catch {
+  MessageBox.Show("Error encountered during INSERT operation.");
+}
+finally {
+  conn.Close();
+}
+--------------------
+
+string connetionString;
+SqlConnection cnn;
+connetionString = @"Data Source=192.168.100.202,1433;Initial Catalog=botnet;User ID=sa;Password=***************";
+cnn = new SqlConnection(connetionString);
+cnn.Open();
+SqlCommand cmd = new SqlCommand("INSERT INTO test VALUES @ip", cnn);
+cmd.Parameters.AddWithValue("@ip", textBox1.Text);
+MessageBox.Show("Check SQL Database");
+
+SqlCommand cmd = new SqlCommand("INSERT INTO ( ) VALUES (@ip)", cnn);
+SqlCommand cmd = new SqlCommand("INSERT INTO nome VALUES @ip", cnn);
+------------------------
+
+SqlConnection mycon = new SqlConnection(strcon);
+mycon.Open();
+string strquery = "INSERT INT0 studentDetails values('" + txtName.Text.ToString() + "','" + txtQual.Text.ToString() + "','" + txtAge.Text.ToString() + "','" + txtMobile.Text + "')";
+SqlCommand cmd = new SqlCommand(strquery, mycon);
+cmd.ExecuteNonQuery();
+
+
+
+

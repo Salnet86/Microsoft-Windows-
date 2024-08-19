@@ -42,9 +42,9 @@ namespace SqlCommandCS
             //
             con.Open();
             //
-            // This code uses an SqlCommand based on the SqlConnection.
+    
             //
-            using (SqlCommand command = new SqlCommand("SELECT TOP 2 * FROM Dogs1", con))
+            using (SqlCommand command = new SqlCommand("SELECT nome * FROM db", con))
             using (SqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())

@@ -1,0 +1,63 @@
+Get-LocalUser -Name "MicrosoftAccount\username@Outlook.com"
+
+
+
+
+New-LocalUser -Name 'Utente' -Description 'Description of this account.' -NoPassword
+
+
+
+
+
+
+
+
+$Password = Read-Host -AsSecureString
+$params = @{
+    Name = 'user'
+    Password = $Password
+    FullName = 'Third User'
+    Description = 'Description of this account.'
+}
+New-LocalUser @params
+
+
+
+
+
+
+
+
+Remove-LocalUser -Name "utente"
+
+
+
+
+
+
+Rename-LocalUser -Name "utente1" -NewName "utente-uno"
+
+
+
+
+Enable-LocalUser -Name "Admin02"
+
+
+
+
+
+
+Get-LocalUser -Name "Administrator" | Enable-LocalUser
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,433 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Lezione2
+{
+    public class CodiceFiscale
+    {
+        private char[] aCodice = new char[17];
+        public char[] aConsonanti = new char[20];
+        public char[] aVocali = new char[20];
+        public char[] bConsonanti = new char[20];
+        public char[] bVocali = new char[20];
+        private int vocali = 1;
+        private int consonanti = 1;
+        public string mCognome { get; set; }
+        public string mNome { get; set; }
+        public string mData { get; set; }
+        public string mSesso { get; set; }
+        public string mLuogo { get; set; }
+        public string mProvincia { get; set; }
+        public string connectionStr = "";
+        public string queryStr = "SELECT * FROM comuniCF order by provincia, comune ";
+        public string sqlSelect = "SELECT * FROM comuniCF WHERE LTRIM(RTRIM(comune)) = 'NAPOLI' AND LTRIM(RTRIM(provincia)) = 'NA'";
+
+        public string Calcola(string cognome, string nome, string sesso, string data, string luogo, string provincia)
+        {
+            // setConnectionString();
+
+            if (String.IsNullOrEmpty(mCognome))
+            {
+                mCognome = cognome;
+                mNome = nome;
+                mSesso = sesso;
+                if (data.LastIndexOf("/") > -1)
+                    mData = data.Substring(6, 4) + data.Substring(3, 2) + data.Substring(0, 2); // Italian
+                else if (data.LastIndexOf(".") > -1)
+                    mData = data.Substring(6, 4) + data.Substring(0, 2) + data.Substring(3, 2); // US/EN
+
+                mLuogo = luogo;
+                mProvincia = provincia;
+            }
+            AzzeraCodice(); //            ' Pulizia del CF
+            AzzeraTabelle(); //           ' Pulizia degli Array di Servizio
+            ScandisciCognome(); //        ' Scansione del Cognome
+            ScandisciNome(); //           ' Scansione del Nome
+            ImpostaCentro(); //           ' Calcolo della parte centrale del CF
+            TrovaLuogoDiNascita(); //     ' Ricerca del codice della località
+            ComponiCheckDigit(); //       ' Composizione del CheckDigit
+            string StringaComposta = "";
+            for (int lc = 1; lc < 17; lc++)
+                StringaComposta = StringaComposta + aCodice[lc];
+            return StringaComposta;
+        }
+
+        public void AzzeraCodice()
+        {
+            aCodice = new char[17];
+        }            //' Pulizia del CF
+
+        public void AzzeraTabelle()
+        {
+            aConsonanti = new char[20];
+            aVocali = new char[20];
+        }           //' Pulizia degli Array di Servizio
+
+        public void ScandisciCognome()
+        {
+            //' -----------------------------------------------
+            //' Conservo le lettere del Cognome in MAIUSCOLO
+            //' -----------------------------------------------
+            mCognome = mCognome.Trim().ToUpper();
+            //' -----------------------------------
+            //' Parto dall'elemento 1 delle tabelle
+            //' -----------------------------------
+            vocali = 1;
+            consonanti = 1;
+            //' --------------------------------------------------------
+            //' Estraggo la stringa (Tabella) Vocali e quella Consonanti
+            //' --------------------------------------------------------
+            for (int lc = 0; lc < mCognome.Length; lc++)
+            {
+                string _c = mCognome.Substring(lc, 1);
+                if ("AEIOU".LastIndexOf(_c) > -1)
+                {
+                    aVocali[vocali] = _c.ToCharArray()[0];
+                    vocali++;
+                }
+                if ("BCDFGHJKLMNPQRSTVZXYW".LastIndexOf(_c) > -1)
+                {
+                    aConsonanti[consonanti] = _c.ToCharArray()[0];
+                    consonanti++;
+                }
+            }
+
+            //' ---------------------------------------------------
+            //' Allineo il numero elementi in tabella e i contatori
+            //' ---------------------------------------------------
+            vocali = vocali - 1;
+            consonanti = consonanti - 1;
+
+            //' ------------------------------------
+            //' Composizione C.F. in posizione 1 2 3
+            //' ------------------------------------
+            if (consonanti > 2)
+            {
+                aCodice[1] = aConsonanti[1];
+                aCodice[2] = aConsonanti[2];
+                aCodice[3] = aConsonanti[3];
+            }
+            if (consonanti == 2 && vocali > 0)
+            {
+                aCodice[1] = aConsonanti[1];
+                aCodice[2] = aConsonanti[2];
+                aCodice[3] = aVocali[1];
+            }
+            if (consonanti == 1 && vocali > 1)
+            {
+                aCodice[1] = aConsonanti[1];
+                aCodice[2] = aVocali[1];
+                aCodice[3] = aVocali[2];
+            }
+            if (consonanti == 1 && vocali == 1)
+            {
+                aCodice[1] = aConsonanti[1];
+                aCodice[2] = aVocali[1];
+                aCodice[3] = 'X';
+            }
+            if (consonanti == 0 && vocali == 2)
+            {
+                aCodice[1] = aVocali[1];
+                aCodice[2] = aVocali[2];
+                aCodice[3] = 'X';
+            }
+            vocali = 1;
+            consonanti = 1;
+        }        //' Scansione del Cognome
+
+        public void ScandisciNome()
+        {
+            //' -----------------------------------------
+            //' Conservo le lettere del Nome in MAIUSCOLO
+            //' -----------------------------------------
+            mNome = mNome.Trim().ToUpper();
+            //' -----------------------------------
+            //' Parto dall'elemento 1 delle tabelle
+            //' -----------------------------------
+            vocali = 1;
+            consonanti = 1;
+            //' --------------------------------------------------------
+            //' Estraggo la stringa (Tabella) Vocali e quella Consonanti
+            //' --------------------------------------------------------
+            for (int lc = 0; lc < mNome.Length; lc++)
+            {
+                string _c = mNome.Substring(lc, 1);
+                if ("AEIOU".LastIndexOf(_c) > -1)
+                {
+                    bVocali[vocali] = _c.ToCharArray()[0];
+                    vocali++;
+                }
+                if ("BCDFGHJKLMNPQRSTVZXYW".LastIndexOf(_c) > -1)
+                {
+                    bConsonanti[consonanti] = _c.ToCharArray()[0];
+                    consonanti++;
+                }
+            }
+            //' ---------------------------------------------------
+            //' Allineo il numero elementi in tabella e i contatori
+            //' ---------------------------------------------------
+            vocali = vocali - 1;
+            consonanti = consonanti - 1;
+            //' ------------------------------------
+            //' Composizione C.F. in posizione 4 5 6
+            //' ------------------------------------
+            if (consonanti > 3)
+            {
+                aCodice[4] = bConsonanti[1];
+                aCodice[5] = bConsonanti[3];
+                aCodice[6] = bConsonanti[4];
+            }
+            if (consonanti == 3)
+            {
+                aCodice[4] = bConsonanti[1];
+                aCodice[5] = bConsonanti[2];
+                aCodice[6] = bConsonanti[3];
+            }
+            if (consonanti == 2 && vocali > 0)
+            {
+                aCodice[4] = bConsonanti[1];
+                aCodice[5] = bConsonanti[2];
+                aCodice[6] = bVocali[1];
+            }
+            if (consonanti == 1 && vocali > 1)
+            {
+                aCodice[4] = bConsonanti[1];
+                aCodice[5] = bVocali[1];
+                aCodice[6] = bVocali[2];
+            }
+            if (consonanti == 1 && vocali == 1)
+            {
+                aCodice[4] = bConsonanti[1];
+                aCodice[5] = bVocali[1];
+                aCodice[6] = 'X';
+            }
+            if (consonanti == 0 && vocali == 2)
+            {
+                aCodice[4] = bVocali[1];
+                aCodice[5] = bVocali[2];
+                aCodice[6] = 'X';
+            }
+            vocali = 1;
+            consonanti = 1;
+        }           //' Scansione del Nome
+
+        public void ImpostaCentro()
+        {
+            //' Calcolo della parte Centrele del CF, data
+            //' La lettera del Mese di Nascita viene estratta da una
+            //' stringa lunga dodici caratteri, uno per ogni mese.
+            string StringaMesi = "$ABCDEHLMPRST";
+            //'Gennaio    = [A] Febbraio   = [B] Marzo      = [C] Aprile     = [D]
+            //'Maggio     = [E] Giugno     = [H] Luglio     = [L] Agosto     = [M]
+            //'Settembre  = [P] Ottobre    = [R] Novembre   = [S] Dicembre   = [T]
+            //' Il gruppo di cifre Centrali del CF è ottenuto con;
+            //' AAXGG dove :
+            //' GG Giorno di nascita, per i maschi,
+            //'    Giorno di nascita + 40, per le femmine
+            int gg = Convert.ToInt16(mData.Substring(6, 2));
+            int aa = Convert.ToInt16(mData.Substring(2, 2));
+            int mm = Convert.ToInt16(mData.Substring(4, 2));
+
+            if (mSesso.ToUpper().Equals("F"))
+                gg = gg + 40;
+
+            string sg = "" + gg;
+            if (sg.Length < 2)
+                sg = "0" + sg;
+
+            string centro = "";
+            //'
+            //' AA Ultime due cifre dell'anno di Nascita
+            //' X  Lettera del mese di nascita
+            //' GG Giorno di nascita
+            if (aa < 10)
+                centro = "0" + aa + "" + StringaMesi[mm] + sg;
+            else
+                centro = "" + aa + "" + StringaMesi[mm] + sg;
+            //' ---------------------------------------------
+            //' Piazzamento caratteri    01
+            //'                       78911
+            //' ---------------------------------------------
+            aCodice[7] = centro.Substring(0, 1).ToCharArray()[0];
+            aCodice[8] = centro.Substring(1, 1).ToCharArray()[0];
+            aCodice[9] = centro.Substring(2, 1).ToCharArray()[0];
+            aCodice[10] = centro.Substring(3, 1).ToCharArray()[0];
+            aCodice[11] = centro.Substring(4, 1).ToCharArray()[0];
+        }           //' Calcolo della parte centrale del CF
+
+        public void TrovaLuogoDiNascita()
+        {
+            string httphost = "http://www.atvinformatica.it/";
+            string reqParameters = "comune=" + mLuogo + "&provincia=" + mProvincia;
+            string service = "getCodiceLocalita.ashx?";
+            Helper hlp = new Helper(); 
+            string sn = hlp.getDataFromService(httphost + service + reqParameters);
+            aCodice[12] = sn.Substring(0, 1).ToCharArray()[0];
+            aCodice[13] = sn.Substring(1, 1).ToCharArray()[0];
+            aCodice[14] = sn.Substring(2, 1).ToCharArray()[0];
+            aCodice[15] = sn.Substring(3, 1).ToCharArray()[0];
+        }     //' Ricerca del codice della località
+
+        public void ComponiCheckDigit()
+        {
+            //' ---------------------------------------------
+            //' routine per la formazione dell'ultima cifra
+            //' del codice fiscale, detta appunto check-digit
+            //' ---------------------------------------------
+            char[] aDispari = new char[17];
+            char[] aPari = new char[17];
+
+            int sp;
+            string ck;
+            int dv;
+            int rt;
+            //' -----------------------------------
+            //' Conservo i caratteri dispari del CF
+            //' -----------------------------------
+            for (int lc = 0; lc < 8; lc++)
+            {
+                aDispari[lc + 1] = aCodice[(lc * 2) + 1];
+            }
+
+            //' --------------------------------
+            //' Conservo i caratteri pari del CF
+            //' --------------------------------
+            for (int lc = 0; lc < 7; lc++)
+            {
+                aPari[lc + 1] = aCodice[(lc * 2) + 2];
+            }
+            //' -----------------------------------------------
+            //' eseguo la somma dei valori per i caratteri pari
+            //' -----------------------------------------------
+            sp = 0;
+            for (int lc = 1; lc < 8; lc++)
+            { //For lc = 1 To 7
+                if (aPari[lc].Equals('A') || aPari[lc].Equals('0'))
+                    sp = sp + 0;
+                if (aPari[lc].Equals('B') || aPari[lc].Equals('1'))
+                    sp = sp + 1;
+                if (aPari[lc].Equals('C') || aPari[lc].Equals('2'))
+                    sp = sp + 2;
+                if (aPari[lc].Equals('D') || aPari[lc].Equals('3'))
+                    sp = sp + 3;
+                if (aPari[lc].Equals('E') || aPari[lc].Equals('4'))
+                    sp = sp + 4;
+                if (aPari[lc].Equals('F') || aPari[lc].Equals('5'))
+                    sp = sp + 5;
+                if (aPari[lc].Equals('G') || aPari[lc].Equals('6'))
+                    sp = sp + 6;
+                if (aPari[lc].Equals('H') || aPari[lc].Equals('7'))
+                    sp = sp + 7;
+                if (aPari[lc].Equals('I') || aPari[lc].Equals('8'))
+                    sp = sp + 8;
+                if (aPari[lc].Equals('J') || aPari[lc].Equals('9'))
+                    sp = sp + 9;
+                if (aPari[lc].Equals('K'))
+                    sp = sp + 10;
+                if (aPari[lc].Equals('L'))
+                    sp = sp + 11;
+                if (aPari[lc].Equals('M'))
+                    sp = sp + 12;
+                if (aPari[lc].Equals('N'))
+                    sp = sp + 13;
+                if (aPari[lc].Equals('O'))
+                    sp = sp + 14;
+                if (aPari[lc].Equals('P'))
+                    sp = sp + 15;
+                if (aPari[lc].Equals('Q'))
+                    sp = sp + 16;
+                if (aPari[lc].Equals('R'))
+                    sp = sp + 17;
+                if (aPari[lc].Equals('S'))
+                    sp = sp + 18;
+                if (aPari[lc].Equals('T'))
+                    sp = sp + 19;
+                if (aPari[lc].Equals('U'))
+                    sp = sp + 20;
+                if (aPari[lc].Equals('V'))
+                    sp = sp + 21;
+                if (aPari[lc].Equals('W'))
+                    sp = sp + 22;
+                if (aPari[lc].Equals('X'))
+                    sp = sp + 23;
+                if (aPari[lc].Equals('Y'))
+                    sp = sp + 24;
+                if (aPari[lc].Equals('Z'))
+                    sp = sp + 25;
+            }
+
+            //' --------------------------------------------------
+            //' eseguo la somma dei valori per i caratteri dispari
+            //' --------------------------------------------------
+            for (int lc = 1; lc < 9; lc++)
+            { //For lc = 1 To 7For lc = 1 To 8
+                if (aDispari[lc].Equals('A') || aDispari[lc].Equals('0'))
+                    sp = sp + 1;
+                if (aDispari[lc].Equals('B') || aDispari[lc].Equals('1'))
+                    sp = sp + 0;
+                if (aDispari[lc].Equals('C') || aDispari[lc].Equals('2'))
+                    sp = sp + 5;
+                if (aDispari[lc].Equals('D') || aDispari[lc].Equals('3'))
+                    sp = sp + 7;
+                if (aDispari[lc].Equals('E') || aDispari[lc].Equals('4'))
+                    sp = sp + 9;
+                if (aDispari[lc].Equals('F') || aDispari[lc].Equals('5'))
+                    sp = sp + 13;
+                if (aDispari[lc].Equals('G') || aDispari[lc].Equals('6'))
+                    sp = sp + 15;
+                if (aDispari[lc].Equals('H') || aDispari[lc].Equals('7'))
+                    sp = sp + 17;
+                if (aDispari[lc].Equals('I') || aDispari[lc].Equals('8'))
+                    sp = sp + 19;
+                if (aDispari[lc].Equals('J') || aDispari[lc].Equals('9'))
+                    sp = sp + 21;
+                if (aDispari[lc].Equals('K'))
+                    sp = sp + 2;
+                if (aDispari[lc].Equals('L'))
+                    sp = sp + 4;
+                if (aDispari[lc].Equals('M'))
+                    sp = sp + 18;
+                if (aDispari[lc].Equals('N'))
+                    sp = sp + 20;
+                if (aDispari[lc].Equals('O'))
+                    sp = sp + 11;
+                if (aDispari[lc].Equals('P'))
+                    sp = sp + 3;
+                if (aDispari[lc].Equals('Q'))
+                    sp = sp + 6;
+                if (aDispari[lc].Equals('R'))
+                    sp = sp + 8;
+                if (aDispari[lc].Equals('S'))
+                    sp = sp + 12;
+                if (aDispari[lc].Equals('T'))
+                    sp = sp + 14;
+                if (aDispari[lc].Equals('U'))
+                    sp = sp + 16;
+                if (aDispari[lc].Equals('V'))
+                    sp = sp + 10;
+                if (aDispari[lc].Equals('W'))
+                    sp = sp + 22;
+                if (aDispari[lc].Equals('X'))
+                    sp = sp + 25;
+                if (aDispari[lc].Equals('Y'))
+                    sp = sp + 24;
+                if (aDispari[lc].Equals('Z'))
+                    sp = sp + 23;
+            }
+            ck = "";
+            //' --------------------------------------------
+            //' Calcolo il resto della divisione tra sp e 26
+            //' --------------------------------------------
+            dv = (int)(sp / 26);
+            rt = sp - (dv * 26);
+
+            //' --------------------
+            //' Trovo il check digit
+            //' --------------------
+            ck = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".Substring(rt, 1);
+            aCodice[16] = ck.ToCharArray()[0];
+        }       //' Composizione del CheckDigit
+    }
+}

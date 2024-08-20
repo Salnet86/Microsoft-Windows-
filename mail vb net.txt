@@ -1,0 +1,18 @@
+Imports System.Net.Mail
+Imports System.Net
+Public Class Form1
+    Dim posta As New MailMessage
+    Dim smtp As New SmtpClient("smtp.live.com")
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        posta = New MailMessage
+        posta.To.Add(TextBox1.Text)
+        posta.From = New MailAddress("metalmeccanica1988@hotmail.com")
+        posta.Subject = "Prova"
+        posta.Body = "prova"
+        posta.Priority = MailPriority.Normal
+        smtp.Credentials = New System.Net.NetworkCredential("", "")
+        smtp.EnableSsl = True
+        smtp.Port = "25"
+        smtp.Send(posta)
+    End Sub
+End Class

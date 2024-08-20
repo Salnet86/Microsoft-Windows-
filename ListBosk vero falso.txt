@@ -1,0 +1,74 @@
+Public Class Form1
+    Dim A As Integer = 10
+    Dim B As Integer = 10
+    Dim C As Integer = 15
+    Dim D As Integer = 20
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Label1.Text = "Esercizio 54: Comparazione di variabili numeriche"
+        ''visualizza il valore di label text con l'opezione With
+        With Label2
+            .Text = "Legenda:" & vbCrLf
+            .Text &= "A = 10" & vbCrLf
+            .Text &= "B = 10" & vbCrLf
+            .Text &= "C = 15" & vbCrLf
+            .Text &= "D = 20"
+        End With
+        ListBox1.Size = New Size(160, 240)
+        ListBox1.ForeColor = Color.Blue
+        ''fon 
+        '' aggiugiamo in codice 
+        ListBox1.Items.Add("A = B")
+        ListBox2.Items.Add(A = B)
+        ListBox1.Items.Add("A + B = D")
+        ListBox2.Items.Add(A + B = D)
+        ListBox1.Items.Add("A = D - B")
+        ListBox2.Items.Add(A = D - B)
+        ListBox1.Items.Add("C + C = A + D")
+        ListBox2.Items.Add(C + C = A + D)
+        ListBox1.Items.Add("D > A")
+        ListBox2.Items.Add(D > A)
+        ListBox1.Items.Add("A < C")
+        ListBox2.Items.Add(A < C)
+        ListBox1.Items.Add("A <= B")
+        ListBox2.Items.Add(A <= B)
+        ListBox1.Items.Add("A <= C")
+        ListBox2.Items.Add(A <= C)
+        ListBox1.Items.Add("A <> D")
+        ListBox2.Items.Add(A <> D)
+        ListBox1.Items.Add("A <> B")
+        ListBox2.Items.Add(A <> B)
+        ListBox1.Items.Add("A + B > D")
+        ListBox2.Items.Add(A + B > D)
+        ListBox1.Items.Add("A < D - B")
+        ListBox2.Items.Add(A < D - B)
+        ListBox1.Items.Add("C + C <> A + D")
+        ListBox2.Items.Add(C + C <> A + D)
+        ListBox1.Items.Add("D <= A")
+        ListBox2.Items.Add(D <= A)
+        ListBox1.Items.Add("A >= C")
+        ListBox2.Items.Add(A >= C)
+        ListBox1.Items.Add("A = B + C")
+        ListBox2.Items.Add(A = B + C)
+        ListBox1.Items.Add("A < B")
+        ListBox2.Items.Add(A < B)
+        ListBox1.Items.Add("A = C")
+        ListBox2.Items.Add(A = C)
+        ListBox1.Items.Add("A = D")
+        ListBox2.Items.Add(A = D)
+        ListBox1.Items.Add("A = B * 2")
+        ListBox2.Items.Add(A = B * 2)
+        ListBox2.Visible = False
+    End Sub
+
+    Private Sub ListBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox1.SelectedIndexChanged
+        Dim OperazioneCliccata As Integer
+        OperazioneCliccata = ListBox1.SelectedIndex
+        If ListBox2.Items(OperazioneCliccata) = True Then
+            MsgBox(ListBox1.SelectedItem & vbCrLf & "VERO")
+        Else
+            MsgBox(ListBox1.SelectedItem & vbCrLf & "FALSO")
+        End If
+
+
+    End Sub
+End Class

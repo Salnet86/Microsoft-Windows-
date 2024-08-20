@@ -1,0 +1,9 @@
+Imports System.Text
+if text_uno <> String.Empty Then
+            query.Append("http://maps.google.com/maps?q=")
+            query.Append(text_uno + "," & "+")
+
+        End If
+
+
+        WebBrowser1.Navigate(query.ToString)

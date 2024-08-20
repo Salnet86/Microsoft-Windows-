@@ -1,0 +1,327 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data.SqlClient;
+using System.Data;
+
+/// <summary>
+/// Summary description for Class1
+/// </summary>
+public class Utente
+{
+    private String DbConnDataSource;
+    private String DbConnCatalog;
+    private String DbConnUsername;
+    private String DbConnPassword;
+    
+    private int id;
+    private int idruolo;
+    private string nome;
+    private string cognome;
+    private string email;
+    private string password;
+    private string ragsoc;
+    private string piva;
+    private string cf;
+    private string indirizzo;
+    private string cap;
+    private string citta;
+    private string telefono;
+    
+    public Utente()
+	{
+        this.DbConnDataSource = "10.10.29.44";
+        this.DbConnCatalog = "DOPPIOMALTO";
+        this.DbConnUsername = "prova";
+        this.DbConnPassword = "prova";
+	}
+
+
+    public bool isValidUser(string username, string password) 
+    {
+        string query = "SELECT * FROM Utente WHERE email='"+username+"' AND password ='"+password+"'";
+        int risultatiTrovati = 0;
+        SqlConnection conn = new SqlConnection();
+        SqlCommand comando;
+        conn.ConnectionString = "Data Source=" + this.DbConnDataSource + "\\SQLEXPRESS;";
+        conn.ConnectionString += "Initial Catalog=" + this.DbConnCatalog + ";";
+        conn.ConnectionString += "User ID=" + this.DbConnUsername + ";";
+        conn.ConnectionString += "Password=" + this.DbConnPassword + ";";
+        conn.Open();
+        comando = new SqlCommand(query, conn);
+        risultatiTrovati = comando.ExecuteNonQuery();
+        conn.Close();
+
+        return risultatiTrovati > 0 ? true : false;
+    }
+
+    private void ExecuteVoidQuery(string query)
+    {
+        SqlConnection conn = new SqlConnection();
+        SqlCommand comando;
+        conn.ConnectionString = "Data Source="+this.DbConnDataSource+"\\SQLEXPRESS;";
+        conn.ConnectionString += "Initial Catalog="+this.DbConnCatalog+";";
+        conn.ConnectionString += "User ID="+this.DbConnUsername+";";
+        conn.ConnectionString += "Password="+this.DbConnPassword+";";
+        conn.Open();
+        comando = new SqlCommand(query, conn);
+        comando.ExecuteNonQuery();
+        conn.Close();
+    }
+
+
+    public DataSet get(string id)
+    {
+        string query = "SELECT Utente.*, Ruolo.descrizione ";
+        query += "FROM Utente JOIN Ruolo ON Utente.idruolo = Ruolo.id ";
+        query += "WHERE id=" + id;
+        SqlConnection conn = new SqlConnection();
+        DataSet ds = new DataSet();
+        SqlDataAdapter da;
+        conn.ConnectionString = "Data Source=" + this.DbConnDataSource + "\\SQLEXPRESS;";
+        conn.ConnectionString += "Initial Catalog=" + this.DbConnCatalog + ";";
+        conn.ConnectionString += "User ID=" + this.DbConnUsername + ";";
+        conn.ConnectionString += "Password=" + this.DbConnPassword + ";";
+        conn.Open();
+        da = new SqlDataAdapter();
+
+        da.SelectCommand = new SqlCommand(query, conn);
+        ds = new DataSet();
+        da.Fill(ds, "Utente");
+
+        conn.Close();
+        return ds;
+    }
+
+    public DataSet getAll()
+    {
+        string query = "SELECT Utente.*, Ruolo.descrizione ";
+        query += "FROM Utente JOIN Ruolo ON Utente.idruolo = Ruolo.id ";
+        SqlConnection conn = new SqlConnection();
+        DataSet ds = new DataSet();
+        SqlDataAdapter da;
+        conn.ConnectionString = "Data Source=" + this.DbConnDataSource + "\\SQLEXPRESS;";
+        conn.ConnectionString += "Initial Catalog=" + this.DbConnCatalog + ";";
+        conn.ConnectionString += "User ID=" + this.DbConnUsername + ";";
+        conn.ConnectionString += "Password=" + this.DbConnPassword + ";";
+        conn.Open();
+        da = new SqlDataAdapter();
+
+        da.SelectCommand = new SqlCommand(query, conn);
+        ds = new DataSet();
+        da.Fill(ds, "Utente");
+
+        conn.Close();
+        return ds;
+    }
+
+    public bool insert() 
+    {
+        string query = "INSERT INTO Utente (";
+        query += "idruolo,";
+        query += "nome,";
+        query += "cognome,";
+        query += "email,";
+        query += "password,";
+        query += "ragsoc,";
+        query += "piva,";
+        query += "cf,";
+        query += "indirizzo,";
+        query += "cap,";
+        query += "citta,";
+        query += "telefono,";
+        query += ") VALUES (";
+        query += this.idruolo + ",";
+        query += "'" + this.nome + "',";
+        query += "'" + this.cognome + "',";
+        query += "'" + this.email + "',";
+        query += "'" + this.password + "',";
+        query += "'" + this.ragsoc + "',";
+        query += "'" + this.piva + "',";
+        query += "'" + this.cf + "',";
+        query += "'" + this.indirizzo + "',";
+        query += "'" + this.cap + "',";
+        query += "'" + this.citta + "',";
+        query += "'" + this.telefono + "',";
+        query += ")";
+
+        int recordInseriti = 0;
+        SqlConnection conn = new SqlConnection();
+        SqlCommand comando;
+        conn.ConnectionString = "Data Source=" + this.DbConnDataSource + "\\SQLEXPRESS;";
+        conn.ConnectionString += "Initial Catalog=" + this.DbConnCatalog + ";";
+        conn.ConnectionString += "User ID=" + this.DbConnUsername + ";";
+        conn.ConnectionString += "Password=" + this.DbConnPassword + ";";
+        conn.Open();
+        comando = new SqlCommand(query, conn);
+        recordInseriti = comando.ExecuteNonQuery();
+        conn.Close();
+
+        return recordInseriti > 0 ? true : false;
+    }
+
+    public bool update(int id)
+    {
+        string query = "UPDATE Utente SET ";
+        query += "idruolo="+this.idruolo+", ";
+        query += "nome="+this.nome+", ";
+        query += "cognome="+this.cognome+", ";
+        query += "email="+this.email+", ";
+        query += "password="+this.password+", ";
+        query += "ragsoc="+this.ragsoc+", ";
+        query += "piva="+this.piva+", ";
+        query += "cf="+this.cf+", ";
+        query += "indirizzo="+this.indirizzo+", ";
+        query += "cap="+this.cap+", ";
+        query += "citta="+this.citta+", ";
+        query += "telefono="+this.telefono+" ";
+        query += "WHERE id="+id;
+
+        int recordInseriti = 0;
+        SqlConnection conn = new SqlConnection();
+        SqlCommand comando;
+        conn.ConnectionString = "Data Source=" + this.DbConnDataSource + "\\SQLEXPRESS;";
+        conn.ConnectionString += "Initial Catalog=" + this.DbConnCatalog + ";";
+        conn.ConnectionString += "User ID=" + this.DbConnUsername + ";";
+        conn.ConnectionString += "Password=" + this.DbConnPassword + ";";
+        conn.Open();
+        comando = new SqlCommand(query, conn);
+        recordInseriti = comando.ExecuteNonQuery();
+        conn.Close();
+
+        return recordInseriti > 0 ? true : false;
+    }
+
+
+    public DataSet delete(string id)
+    {
+        string query = "DELETE FROM Utente ";
+        query += "WHERE id=" + id;
+        SqlConnection conn = new SqlConnection();
+        DataSet ds = new DataSet();
+        SqlDataAdapter da;
+        conn.ConnectionString = "Data Source=" + this.DbConnDataSource + "\\SQLEXPRESS;";
+        conn.ConnectionString += "Initial Catalog=" + this.DbConnCatalog + ";";
+        conn.ConnectionString += "User ID=" + this.DbConnUsername + ";";
+        conn.ConnectionString += "Password=" + this.DbConnPassword + ";";
+        conn.Open();
+        da = new SqlDataAdapter();
+
+        da.SelectCommand = new SqlCommand(query, conn);
+        ds = new DataSet();
+        da.Fill(ds, "Utente");
+
+        conn.Close();
+        return ds;
+    }
+
+    public int getIdruolo()
+    {
+        return this.idruolo;
+    }
+    public void setIdruolo(int idruolo)
+    {
+        this.idruolo = idruolo;
+    }
+
+    public string getNome()
+    {
+        return this.nome;
+    }
+    public void setNome(string nome)
+    {
+        this.nome = nome;
+    }
+
+    public string getCognome()
+    {
+        return this.cognome;
+    }
+    public void setCognome(string cognome)
+    {
+        this.cognome = cognome;
+    }
+
+    public string getEmail()
+    {
+        return this.email;
+    }
+    public void setEmail(string email)
+    {
+        this.email = email;
+    }
+
+    public string getPassword()
+    {
+        return this.password;
+    }
+    public void setPassword(string password)
+    {
+        this.password = password;
+    }
+
+    public string getRagsoc()
+    {
+        return this.ragsoc;
+    }
+    public void setRagsoc(string ragsoc)
+    {
+        this.ragsoc = ragsoc;
+    }
+
+    public string getPiva()
+    {
+        return this.piva;
+    }
+    public void setPiva(string piva)
+    {
+        this.piva = piva;
+    }
+
+    public string getCf()
+    {
+        return this.cf;
+    }
+    public void setCf(string cf)
+    {
+        this.cf = cf;
+    }
+
+    public string getIndirizzo()
+    {
+        return this.indirizzo;
+    }
+    public void setIndirizzo(string indirizzo)
+    {
+        this.indirizzo = indirizzo;
+    }
+
+    public string getCap()
+    {
+        return this.cap;
+    }
+    public void setCap(string cap)
+    {
+        this.cap = cap;
+    }
+
+    public string getCitta()
+    {
+        return this.citta;
+    }
+    public void setCitta(string citta)
+    {
+        this.citta = citta;
+    }
+
+    public string getTelefono()
+    {
+        return this.telefono;
+    }
+    public void setTelefono(string telefono)
+    {
+        this.telefono = telefono;
+    }
+
+}

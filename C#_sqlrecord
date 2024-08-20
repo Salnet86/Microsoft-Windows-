@@ -1,0 +1,20 @@
+string sql = "INSERT INTO [dbo].[Authors] VALUES (4, 'Smith')";
+
+    SqlCommand cmd = new SqlCommand(sql, connection);
+
+    SqlDataAdapter adap = new SqlDataAdapter();
+    adap.InsertCommand = new SqlCommand(sql, connection);
+    adap.InsertCommand.ExecuteNonQuery();
+
+    //Read all records from the database
+    sql = "SELECT * FROM Authors";
+
+    cmd = new SqlCommand(sql, connection);
+
+    SqlDataReader dreader = cmd.ExecuteReader();
+
+    // for one by one reading row 
+    while (dreader.Read())
+    {
+        Console.WriteLine(dreader.GetValue(0) + ", " + dreader.GetValue(1));
+    }

@@ -1,4 +1,4 @@
-string sql = "INSERT INTO [dbo].[Authors] VALUES (4, 'Smith')";
+string sql = "INSERT INTO [dbo].[corsi] VALUES (1, 'linux')";
 
     SqlCommand cmd = new SqlCommand(sql, connection);
 
@@ -6,14 +6,14 @@ string sql = "INSERT INTO [dbo].[Authors] VALUES (4, 'Smith')";
     adap.InsertCommand = new SqlCommand(sql, connection);
     adap.InsertCommand.ExecuteNonQuery();
 
-    //Read all records from the database
-    sql = "SELECT * FROM Authors";
+    
+    sql = "SELECT * FROM corsi";
 
     cmd = new SqlCommand(sql, connection);
 
     SqlDataReader dreader = cmd.ExecuteReader();
 
-    // for one by one reading row 
+    
     while (dreader.Read())
     {
         Console.WriteLine(dreader.GetValue(0) + ", " + dreader.GetValue(1));

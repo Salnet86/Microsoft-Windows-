@@ -1,0 +1,136 @@
+
+
+    --use corsosql;
+
+	     /*
+          SELECT ename
+          FROM emp
+          WHERE sal > (SELECT sal  FROM emp WHERE ename = 'Daniel');*/
+
+
+		-- SELECT ename FROM emp  WHERE sal > (SELECT sal  FROM emp WHERE ename = 'Daniel');
+
+		--select job ename from emp where job='steven';
+
+
+
+		--select ename from emp where ename='steven';
+
+		     
+			-- select ename , sal  from emp where ename='steven' and sal > 12;
+		
+
+		--select sal, job from emp;
+
+		
+		--select job , sal from emp where job='account' and sal=24000.00;
+
+		/*
+		--media del salario di ogno dipartimento 
+		select deptno , avg(sal)
+		from emp group by deptno;*/
+
+   /*
+    SELECT deptno, avg(sal)
+    FROM emp
+    GROUP BY deptno
+    HAVING MIN(sal)>(SELECT MIN(sal)
+    FROM emp
+    WHERE deptno = 30);*/
+
+	/*
+
+    SELECT deptno, avg(sal)
+    FROM emp
+    GROUP BY deptno
+    HAVING MIN(sal) > (SELECT MIN(sal)
+    FROM emp
+    WHERE deptno = 30);*/
+
+	--dipartimento
+	--select deptno from emp;
+
+
+	/*
+    SELECT deptno, avg(sal) as salario
+    FROM emp
+    GROUP BY deptno
+    HAVING MIN(sal) > (SELECT MIN(sal)
+    FROM emp
+    WHERE deptno = 30);*/
+
+	--se uguale al deptno a 30
+    /*SELECT deptno, avg(sal) as salario
+    FROM emp
+    GROUP BY deptno
+    HAVING MIN(sal) = (SELECT MIN(sal)
+    FROM emp
+    WHERE deptno = 30);*/
+
+	/*
+    SELECT deptno, avg(sal) as salario
+    FROM emp
+    GROUP BY deptno
+    HAVING MIN(sal) > (SELECT MIN(sal)
+    FROM emp
+    WHERE deptno = 30);*/
+
+
+
+	/*
+
+	delete from dept
+    where dname in('Public Relations','Sales')*/
+
+/*
+	SELECT *
+    FROM dept d , emp a
+    WHERE d.deptno = a.deptno*/
+
+
+	--d.dname d e una variabile che dipartimento dname e alias 
+	/*
+    SELECT d.dname,*
+    FROM dept d , emp a
+    WHERE d.deptno = a.deptno;*/
+
+	/*
+	select * from dept a left outer join emp b 
+    on a.deptno=b.deptno
+    SELECT d.department_id, d.department_name, e.*
+    FROM departments d LEFT OUTER JOIN employees e
+    ON d.department_id = e.department_id
+    ORDER BY d.department_id, e.last_name;*/
+
+
+	/*
+	SELECT *
+    FROM departments d FULL OUTER JOIN employees e
+    ON d.department_id = e.department_id
+    ORDER BY d.department_id, e.last_name*/
+
+   --jon left  tabella di destra confron con la tabella di sinistra
+
+   /*
+   select * 
+   from Products pro left outer join ORDERITEMS ord 
+   ON pro.prod_id=ord.PROD_ID
+   order by pro.prod_id;*/
+
+
+
+   /*
+    select * 
+    from emp right join dept 
+	on emp.DEPTNO=dept.DEPTNO
+	where emp.deptno=dept.deptno
+	and job='CLERK';*/
+
+
+
+	-- selezione il nome del campo colonna che sarebbe dname della tabella dept 
+	SELECT  d.dname,*
+	-- da dove from dept nome alias d , emp nome alias a 
+    FROM dept d , emp a
+	-- poi metto in rellazione le due tabelle prendendo prendendo il nome alis d.deptno = a.deptno
+    WHERE d.deptno = a.deptno

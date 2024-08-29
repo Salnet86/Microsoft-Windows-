@@ -20,3 +20,5 @@ reset password account
 net user username nuova password 
 Impostare nuova  password utente 
 net user username*
+oppure cambiare password 
+net user /passwordchg:no

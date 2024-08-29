@@ -1,0 +1,15 @@
+Comandi Windows CMD 
+Remover password account 
+1) net user username/passwordreg:yes
+2) net user username /passwordreg:no
+Disable Enable account 
+3) net user "User Name" /active:no
+4) net user "User Name" /active:yes
+
+Per abilitare un account di dominio Enter
+Digitare prima 
+net user "User Name" /active:yes
+Poi net user "User Name" /active:yes /domain
+Aggiungi account 
+net user /add username
+net user /delete username 

@@ -13,3 +13,10 @@ Poi net user "User Name" /active:yes /domain
 Aggiungi account 
 net user /add username
 net user /delete username 
+
+Impostare Scadenza password account 
+net user username /expires:11/09/2024
+reset password account 
+net user username nuova password 
+Impostare nuova  password utente 
+net user username*

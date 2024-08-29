@@ -1,0 +1,35 @@
+--Gestione dischi pc Windows - - - 
+1) list disk 
+2) select disk 1 or disk 2
+3) select volume 
+4) clean 
+5) create partition primary size=102400
+6) active 
+7) format fs=fat32 quick
+8) assign letter=E
+9) delete volume 
+----------------------
+Esempio 
+list disk 
+select disk 2
+select volume 1
+clean
+create partition primary size=102400
+format fs=NTFS label=4usb quick 
+assign letter=F
+active 
+extend size=20480
+-------------------------
+Convert disk GPT OR MBR 
+
+
+list disk
+
+select disk 1
+
+ clean
+
+convert gpt o mbr
+
+
+

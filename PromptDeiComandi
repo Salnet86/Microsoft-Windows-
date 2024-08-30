@@ -1,0 +1,6 @@
+----Prompt cmd - - - 
+Modalità provvisoria 
+
+1) bcdedit /set {globalsettings} advancedoptions true
+Modalità ripristinata 
+2)  bcdedit /set {globalsettings} advancedoptions false

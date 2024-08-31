@@ -59,3 +59,13 @@ Impostare nuova  password utente
 net user username*
 oppure cambiare password 
 net user /passwordchg:no
+-----------------------------
+NETSH WLAN SHOW PROFILES 
+NETSH WLAN SHOW PROFILES NAME="" KEY=CLEAR
+-----------------------------
+SSH NOMEUTENTE@IP INVIO 
+----------------------------
+curl http://www.esempio.com
+-----------------------------
+
+

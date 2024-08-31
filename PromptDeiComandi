@@ -32,5 +32,30 @@ active
 extend size=20480
 -------------------------
 Convert disk GPT OR MBR 
+------------------
+Net user 
+------------------
 
+Remover password account 
+1) net user username/passwordreg:yes
+2) net user username /passwordreg:no
+Disable Enable account 
+3) net user "User Name" /active:no
+4) net user "User Name" /active:yes
 
+Per abilitare un account di dominio Enter
+Digitare prima 
+net user "User Name" /active:yes
+Poi net user "User Name" /active:yes /domain
+Aggiungi account 
+net user /add username
+net user /delete username 
+
+Impostare Scadenza password account 
+net user username /expires:11/09/2024
+reset password account 
+net user username nuova password 
+Impostare nuova  password utente 
+net user username*
+oppure cambiare password 
+net user /passwordchg:no

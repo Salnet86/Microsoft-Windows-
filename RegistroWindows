@@ -1,0 +1,138 @@
+
+reg add [key] /v [value] /t [type] /d [data]
+reg delete [key] /v [value]
+reg query [key]
+reg query [key] /f [search]
+reg query [key] /s
+reg query [key] /v [value]
+reg export [key] [file.reg]
+reg import [file.reg]
+reg save [key] [file]
+reg restore [key] [file]
+reg compare [key1] [key2]
+reg copy [source] [destination]
+reg flags
+reg undo
+reg list [key]
+reg update [key] /v [value] /t [type] /d [data]
+reg backup
+reg query [key] /k
+reg query [key] /t [type]
+reg query [key] /o
+reg query [key] /se [separator]
+reg query [key] /c
+reg query [key] /s /f [search]
+reg query [key] /v [value] /s
+reg query [key] /t [type] /s
+reg export [key] [file.reg] /y
+reg import [file.reg] /f
+reg delete [key] /f
+reg save [key] [file] /y
+reg save [key] [file] /f
+reg add [key] /v [value] /t [type] /d [data] /f
+reg compare [key1] [key2] /c
+reg delete [key] /v [value] /f
+reg copy [source] [destination] /s
+reg restore [key] [file] /y
+reg restore [key] [file] /f
+reg update [key] /v [value] /t [type] /d [data] /s
+reg query [key] /k /v [value]
+reg query [key] /o /s
+reg query [key] /s /f [search] /v [value]
+reg add [key] /v [value] /t [type] /d [data] /s
+reg export [key] [file.reg] /se [separator]
+reg import [file.reg] /y
+reg query [key] /o /f [search]
+reg export [key] [file.reg] /f
+reg compare [key1] [key2] /v [value] /f
+reg export [key] [file.reg] /s
+reg delete [key] /f /v [value]
+
+
+----------------
+reg add [key] /v [value] /t [type] /d [data]
+reg add [key] /v [value] /t [type] /d [data] /f
+reg delete [key] /v [value]
+reg delete [key] /v [value] /f
+reg query [key]
+reg query [key] /f [search]
+reg query [key] /s
+reg query [key] /v [value]
+reg query [key] /v [value] /s
+reg query [key] /t [type]
+reg query [key] /o
+reg query [key] /se [separator]
+reg query [key] /c
+reg query [key] /s /f [search]
+reg query [key] /v [value] /s
+reg query [key] /t [type] /s
+reg export [key] [file.reg]
+reg export [key] [file.reg] /y
+reg export [key] [file.reg] /s
+reg import [file.reg]
+reg import [file.reg] /f
+reg save [key] [file]
+reg save [key] [file] /y
+reg save [key] [file] /f
+reg restore [key] [file]
+reg restore [key] [file] /y
+reg restore [key] [file] /f
+reg compare [key1] [key2]
+reg compare [key1] [key2] /v [value]
+reg copy [source] [destination]
+reg flags
+reg undo
+reg list [key]
+reg update [key] /v [value] /t [type] /d [data]
+reg update [key] /v [value] /t [type] /d [data] /s
+reg delete [key] /v [value] /f
+reg copy [source] [destination] /s
+reg restore [key] [file] /y
+reg restore [key] [file] /f
+-------
+reg add [key] /v [value] /t [type] /d [data]
+reg delete [key] /v [value]
+reg query [key]
+reg query [key] /f [search]
+reg query [key] /s
+reg query [key] /v [value]
+reg export [key] [file.reg]
+reg import [file.reg]
+reg save [key] [file]
+reg restore [key] [file]
+reg compare [key1] [key2]
+reg copy [source] [destination]
+reg query [key] /k
+reg query [key] /t [type]
+reg query [key] /o
+reg query [key] /se [separator]
+reg query [key] /c
+reg query [key] /s /f [search]
+reg query [key] /v [value] /s
+reg query [key] /t [type] /s
+reg export [key] [file.reg] /y
+reg import [file.reg] /f
+reg delete [key] /f
+reg save [key] [file] /y
+reg save [key] [file] /f
+reg add [key] /v [value] /t [type] /d [data] /f
+reg compare [key1] [key2] /c
+reg delete [key] /v [value] /f
+reg copy [source] [destination] /s
+reg restore [key] [file] /y
+reg restore [key] [file] /f
+reg update [key] /v [value] /t [type] /d [data] /s
+reg query [key] /k /v [value]
+reg query [key] /o /s
+reg query [key] /s /f [search] /v [value]
+reg add [key] /v [value] /t [type] /d [data] /s
+reg export [key] [file.reg] /se [separator]
+reg import [file.reg] /y
+reg query [key] /o /f [search]
+reg export [key] [file.reg] /f
+reg compare [key1] [key2] /v [value] /f
+reg export [key] [file.reg] /s
+reg delete [key] /f /v [value]
+
+
+
